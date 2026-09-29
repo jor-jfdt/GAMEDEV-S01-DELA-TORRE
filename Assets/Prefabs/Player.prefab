@@ -156,6 +156,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MovementController
   stats: {fileID: 0}
   moveSpeed: 5
+  jumpHeight: 2
+  gravity: -9.81
 --- !u!114 &8811970792523600313
 MonoBehaviour:
   m_ObjectHideFlags: 0

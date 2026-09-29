@@ -15,6 +15,14 @@ public class MovementController : MonoBehaviour
     [SerializeField]
     float moveSpeed = 5f;
 
+    [SerializeField]
+    float jumpHeight = 2f;
+
+    [SerializeField]
+    float gravity = -9.81f;
+
+    float verticalVelocity;
+
     //[SerializeField]
     CharacterController controller;
 
@@ -29,7 +37,13 @@ public class MovementController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        controller.Move(moveSpeed * Time.deltaTime * new Vector3(moveInput.x, 0, moveInput.y));
+        if (controller.isGrounded && verticalVelocity < 0) {
+            verticalVelocity = -2f;
+        }
+
+        verticalVelocity += gravity * Time.deltaTime;
+        Vector3 movement = new Vector3(moveInput.x * moveSpeed, verticalVelocity, moveInput.y * moveSpeed);
+        controller.Move(movement * Time.deltaTime);
     }
 
     public void OnMove(InputValue value)
@@ -39,6 +53,8 @@ public class MovementController : MonoBehaviour
 
     public void OnJump(InputValue value)
     {
-        stats.Health += 10;
+        if (value.isPressed && controller.isGrounded) {
+            verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        }
     }
 }
